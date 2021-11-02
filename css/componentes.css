@@ -1,0 +1,16 @@
+h1 {
+    color: indigo;
+}
+
+img { 
+    width: 10%;
+    border-radius:50%;
+    margin: 20px;
+    border: 10px solid;
+    border-color: rgb(48, 36, 218);
+}
+button{
+    display: inline-block;
+    margin: 5%;
+    margin-top:1%;
+}
