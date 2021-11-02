@@ -1,6 +1,4 @@
-import {redirigirY, redirigirG} from './js/componentes';
-import './styles.css';
-import './css/componentes.css';
+import {redirigirY, redirigirG} from './js/componentes.js';
 
 const iniciarG = document.querySelector('#inicioG');
 iniciarG.addEventListener('click', redirigirG, false);

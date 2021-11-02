@@ -1,7 +1,5 @@
-import '../css/componentes.css';
-// import webpacklogo from '../assets/img/webpack-logo.png';
 const redirigirG = ()=>{
-    window.location.href='../assets/html/gusmes.html';
+    window.location.href='assets/html/gusmes.html';
     console.log('Gus');
 };
 
