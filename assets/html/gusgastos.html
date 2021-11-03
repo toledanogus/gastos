@@ -9,6 +9,7 @@
     <title>Gus gastos mensuales</title>
 </head>
 <body>
+    <div class='flex-container'>
     <table class='gastos' id="permanentes">
         <tr>
             <th colspan="3">Gastos permanentes</th>
@@ -19,47 +20,47 @@
             <th>Pagado</th>
             </tr>
         <tr>
-            <td>Comida</td>
+            <td id="comida">Comida</td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td>Garrafones</td>
+            <td id='garrafones'>Garrafones</td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td>Despensa</td>
+            <td id='despensa'>Despensa</td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td>Ahorro</td>
+            <td id='ahorro'>Ahorro</td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td>Gas</td>
+            <td id='gas'>Gas</td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td>Luz</td>
+            <td id='luz'>Luz</td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td>Psicóloga</td>
+            <td id='psic'>Psicóloga</td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td>Agua</td>
+            <td id='agua'>Agua</td>
             <td></td>
             <td></td>
         </tr>
         <tr>
-            <td>Taxis</td>
+            <td id='taxis'>Taxis</td>
             <td></td>
             <td></td>
         </tr>
@@ -87,7 +88,7 @@
             <th id='total'>0</th>
         </tr>
     </table>
-    <table class='registrar' id="ingresar">
+    <table class='gastos' id="ingresar">
         <tr >
             <th colspan="3">Ingresar nuevo gasto:</th>
         </tr>
@@ -100,7 +101,7 @@
             <th colspan='2'> <input id="cantidad"> </th>
         </tr>
         <tr>
-            <td colspan='3' id="derecha"> <button type='submit'> Registrar </button> </td>
+            <td colspan='3' id="derecha"> <button type='submit' id='registrar'> Registrar </button> </td>
         </tr>
         <tr>
             <th colspan='3' id='derecha'> 
@@ -115,8 +116,9 @@
             <td colspan="3" id='ingreso'>0</td>
         </tr>
     </table>
+    </div>
     <div class="flex-container">
-        <table>
+        <table class='abajo'>
             <tr>
                 <th>Gastos del mes:</th>
                 <th>0</th>
@@ -126,13 +128,13 @@
                 <th>0</th>
             </tr>
         </table>
-        <table>
+        <table class='abajo'>
             <tr>
                 <th>Sobrante:</th>
                 <th>0</th>
             </tr>
         </table>
-        <table>
+        <table class='abajo' id='guardar'>
             <tr>
                 <td><button type="submit">Guardar</button></td>
             </tr>

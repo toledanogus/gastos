@@ -15,13 +15,22 @@ button{
     margin-top:1%;
 }
 table.gastos{
-    display:inline-flex;
-    margin: 20px;
+    margin: .5%;
+}
+table{
     border: 1px solid;
 }
 table.registrar{
-    display:inline-flex;
     border: 1px solid;
+}
+table.abajo{
+    border: 1px solid;
+}
+table.abajo > tbody > tr > th{
+    border: 0px;
+}
+table#guardar{
+    border: 0px;
 }
 th{
     padding: 10px;
@@ -36,7 +45,7 @@ td#ingreso{
 th#total{
     border: 0px;
 }
-table.registrar > tbody > tr > th{
+table.registrar > tbody > tr > th, table#ingresar > tbody > tr > th{
     border: 0px;
 }
 .flex-container {
@@ -46,7 +55,7 @@ table.registrar > tbody > tr > th{
     align-items: flex-start;
 }
 div>table{
-    margin: 5%;
+    margin: 3%;
     margin-top: 1%;
 }
 td#derecha, th#derecha{
