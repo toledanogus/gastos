@@ -16,6 +16,7 @@ button{
 }
 table.gastos{
     margin: .5%;
+    text-align: left;
 }
 table{
     border: 1px solid;
