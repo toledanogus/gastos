@@ -27,6 +27,31 @@ th{
     padding: 10px;
     border: 1px solid;
 }
+td{
+    text-align: left;
+}
+td#ingreso{
+    text-align: center;
+}
+th#total{
+    border: 0px;
+}
 table.registrar > tbody > tr > th{
     border: 0px;
+}
+.flex-container {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+div>table{
+    margin: 5%;
+    margin-top: 1%;
+}
+td#derecha, th#derecha{
+    text-align: right;
+}
+button#extras{
+    margin: 1%;
 }

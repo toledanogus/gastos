@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,12 +14,63 @@
             <th colspan="3">Gastos permanentes</th>
         </tr>
         <tr>
-        <th>Concepto</th>
-        <th>Cantidad</th>
-        <th>Pagado</th>
+            <th>Concepto</th>
+            <th>Cantidad</th>
+            <th>Pagado</th>
+            </tr>
+        <tr>
+            <td>Comida</td>
+            <td></td>
+            <td></td>
         </tr>
         <tr>
-
+            <td>Garrafones</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Despensa</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Ahorro</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Gas</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Luz</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Psicóloga</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Agua</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Taxis</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td> <button type="submit">HSBC</button> </td>
+            <td>Sin calcular</td>
+            <td></td>
+        </tr>
+        <tr>
+            <th>Total</th>
+            <th id="total">0</th>
         </tr>
     </table>
     <table class='gastos' id='extrass'>
@@ -32,9 +83,8 @@
         <th>Pagado</th>
         </tr>
         <tr>
-            <td>iuh</td>
-            <td>iuh</td>
-            <td>iuh</td>
+            <th>Total</th>
+            <th id='total'>0</th>
         </tr>
     </table>
     <table class='registrar' id="ingresar">
@@ -50,8 +100,43 @@
             <th colspan='2'> <input id="cantidad"> </th>
         </tr>
         <tr>
-            <td colspan='3'> <button type='submit'> Registrar </button> </td>
+            <td colspan='3' id="derecha"> <button type='submit'> Registrar </button> </td>
+        </tr>
+        <tr>
+            <th colspan='3' id='derecha'> 
+                <label for="extras">No hubo gastos extras</label>
+                <button type="submit" name="extras" id="extras">Sin extras</button>
+            </th>
+        </tr>
+        <tr>
+            <th colspan='3'>Ingreso del mes:</th>
+        </tr>
+        <tr>
+            <td colspan="3" id='ingreso'>0</td>
         </tr>
     </table>
+    <div class="flex-container">
+        <table>
+            <tr>
+                <th>Gastos del mes:</th>
+                <th>0</th>
+            </tr>
+            <tr>
+                <th>Pendiente:</th>
+                <th>0</th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th>Sobrante:</th>
+                <th>0</th>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td><button type="submit">Guardar</button></td>
+            </tr>
+        </table>
+    </div>
 </body>
 </html>
