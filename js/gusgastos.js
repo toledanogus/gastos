@@ -1,7 +1,11 @@
 const mes = localStorage.getItem('Mes');
 console.log(mes);
 let gastosP;
-const url = '../php/traergastos.php'
+let extrasBase;
+let extrasBase2;
+const url = '../php/traergastos.php';
+const url2 = '../php/llevarextras.php';
+const url3 = '../php/traerextras.php';
 
 const meses = ['nov21', 'dic21', 'ene22', 'feb22', 'mar22', 'abr22', 'may22', 'jun22', 'jul22', 'ago22', 'sep22', 'oct22', 'nov22', 'dic22']
 
@@ -70,7 +74,7 @@ const enviarMes = async () => {
 };
 enviarMes()
     .then(() => pintarGP())
-    //.then(()=> pintarCasillas())
+//.then(()=> pintarCasillas())
 
 const pintarGP = () => {
     const tabla1 = document.querySelectorAll('#permanentes > tbody > tr > td');
@@ -89,7 +93,7 @@ const pintarGP = () => {
 };
 
 const pintarCasillas = () => {
-    const tabla1 = document.querySelectorAll('td:nth-child(3):not(.hsbc)').forEach((x)=>{
+    const tabla1 = document.querySelectorAll('td:nth-child(3):not(.hsbc)').forEach((x) => {
         const input = document.createElement('input');
         const conceptos = Object.keys(gastosP);
         input.setAttribute('type', 'checkbox');
@@ -106,7 +110,67 @@ const ingresarGasto = () => {
     document.querySelector('#concepto').value = '';
     document.querySelector('#cantidad').value = '';
 
-    
+    let extrasJson = new Object();
+    extrasJson['concepto'] = concepto;
+    extrasJson['cantidad'] = cantidad;
+    extrasJson['id_mes'] = mes;
+
+    const enviarExtras = async () => {
+        const peticion2 = await fetch(url2, {
+            method: 'POST',
+            body: JSON.stringify(extrasJson),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        extrasBase = await peticion2.json();
+        console.log(extrasBase);
+    }
+    enviarExtras()
+    //.then(() => pintarExtras());
 }
 const botonReg = document.querySelector('#registrar');
-botonReg.addEventListener('click',ingresarGasto);
+botonReg.addEventListener('click', ingresarGasto);
+
+
+const leerExtras = async () => {
+    let extrasJson = new Object();
+    extrasJson['id_mes'] = mes;
+    const peticion3 = await fetch(url3, {
+        method: 'POST',
+        body: JSON.stringify(extrasJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    extrasBase2 = await peticion3.json();
+    console.log(extrasBase2);
+
+}
+
+
+
+const pintarExtras = () => {
+    for (let i = 0; i < extrasBase2.length; i++) {
+        console.log(extrasBase2[i]);
+        const tr = document.createElement('tr');
+        const t1 = document.createElement('td');
+        const con = document.createTextNode(extrasBase2[i][0]);
+        t1.append(con);
+        const t2 = document.createElement('td');
+        const can = document.createTextNode(extrasBase2[i][1]);
+        t2.append(can);
+        const t3 = document.createElement('td');
+        const pag = document.createTextNode(extrasBase2[i][2]);//voy a cambiarlo por las casillas
+        t3.append(pag);
+        tr.append(t1, t2, t3);
+        const concepto2 = document.querySelector('#total2');
+        /* "afterbegin"
+        "afterend"
+        "beforebegin"
+        "beforeend" */
+        concepto2.insertAdjacentElement('beforebegin', tr);
+    }
+}
+leerExtras()
+    .then(() =>pintarExtras());

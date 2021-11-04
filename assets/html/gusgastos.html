@@ -76,16 +76,16 @@
                 <th id="total1">0</th>
             </tr>
         </table>
-        <table class='gastos' id='extrass'>
+        <table class='gastos' id='extras'>
             <tr>
                 <th colspan="3">Gastos extras</th>
             </tr>
-            <tr>
+            <tr id='extras1'>
                 <th>Concepto</th>
                 <th>Cantidad</th>
                 <th>Pagado</th>
             </tr>
-            <tr>
+            <tr id='total2'>
                 <th>Total</th>
                 <th id='total'>0</th>
             </tr>
@@ -96,11 +96,11 @@
             </tr>
             <tr>
                 <th>Concepto:</th>
-                <th colspan='2'> <input id="concepto"> </th>
+                <th colspan='2'> <input id="concepto" required> </th>
             </tr>
             <tr>
                 <th>Cantidad:</th>
-                <th colspan='2'> <input id="cantidad"> </th>
+                <th colspan='2'> <input id="cantidad" type="number" required> </th>
             </tr>
             <tr>
                 <td colspan='3' id="derecha"> <button type='submit' id='registrar'> Registrar </button> </td>
