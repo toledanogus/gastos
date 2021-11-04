@@ -65,3 +65,6 @@ td#derecha, th#derecha{
 button#extras{
     margin: 1%;
 }
+td:nth-child(3) {
+    text-align: center;
+  }

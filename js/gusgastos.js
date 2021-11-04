@@ -69,7 +69,8 @@ const enviarMes = async () => {
     console.log(gastosP);
 };
 enviarMes()
-    .then(() => pintarGP());
+    .then(() => pintarGP())
+    //.then(()=> pintarCasillas())
 
 const pintarGP = () => {
     const tabla1 = document.querySelectorAll('#permanentes > tbody > tr > td');
@@ -78,7 +79,7 @@ const pintarGP = () => {
     console.log(elementos);
 
     for (let i = 0, j = 0; i < 9; i++, j += 3) {
-        elementos[j].nextSibling.textContent = `$ ${Object.values(gastosP)[i]}`;
+        elementos[j].nextElementSibling.textContent = `$ ${Object.values(gastosP)[i]}`;
     }
     const reducer = (a, b) => a + b;
     const cantidades = Object.values(gastosP);
@@ -88,5 +89,24 @@ const pintarGP = () => {
 };
 
 const pintarCasillas = () => {
-
+    const tabla1 = document.querySelectorAll('td:nth-child(3):not(.hsbc)').forEach((x)=>{
+        const input = document.createElement('input');
+        const conceptos = Object.keys(gastosP);
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('name', conceptos[0]);
+        input.setAttribute('value', conceptos[0]);
+        x.append(input);
+    });
 }
+
+const ingresarGasto = () => {
+    let concepto = document.querySelector('#concepto').value;
+    let cantidad = document.querySelector('#cantidad').value;
+    console.log(concepto, cantidad);
+    document.querySelector('#concepto').value = '';
+    document.querySelector('#cantidad').value = '';
+
+    
+}
+const botonReg = document.querySelector('#registrar');
+botonReg.addEventListener('click',ingresarGasto);
