@@ -1,15 +1,12 @@
 const mes = localStorage.getItem('Mes');
 console.log(mes);
-let gastosP;
-let extrasBase;
-let extrasBase2;
+let suma1, suma2, suma3, gastosP, extrasBase, extrasBase2, tipomes;
 const url = '../php/traergastos.php';
 const url2 = '../php/llevarextras.php';
 const url3 = '../php/traerextras.php';
+const url4 = '../php/traerIngreso.php';
 
 const meses = ['nov21', 'dic21', 'ene22', 'feb22', 'mar22', 'abr22', 'may22', 'jun22', 'jul22', 'ago22', 'sep22', 'oct22', 'nov22', 'dic22']
-
-let tipomes;
 
 switch (mes) {
     case meses[0]:
@@ -72,9 +69,6 @@ const enviarMes = async () => {
     gastosP = await resp.json();
     console.log(gastosP);
 };
-enviarMes()
-    .then(() => pintarGP())
-//.then(()=> pintarCasillas())
 
 const pintarGP = () => {
     const tabla1 = document.querySelectorAll('#permanentes > tbody > tr > td');
@@ -88,6 +82,7 @@ const pintarGP = () => {
     const reducer = (a, b) => a + b;
     const cantidades = Object.values(gastosP);
     const suma = cantidades.reduce(reducer);
+    suma1 = suma;
     const moneda = new Intl.NumberFormat().format(suma)
     total1.textContent = `$ ${moneda}`;
 };
@@ -103,7 +98,7 @@ const pintarCasillas = () => {
     });
 }
 
-const ingresarGasto = () => {
+const ingresarGasto = async () => {
     let concepto = document.querySelector('#concepto').value;
     let cantidad = document.querySelector('#cantidad').value;
     console.log(concepto, cantidad);
@@ -123,14 +118,12 @@ const ingresarGasto = () => {
                 'Content-Type': 'application/json'
             }
         });
-        extrasBase = await peticion2.json();
-        console.log(extrasBase);
+        extrasBase2 = await peticion2.json();
+        console.log(extrasBase2);
     }
     enviarExtras()
-    //.then(() => pintarExtras());
+        .then(() => pintarExtras())
 }
-const botonReg = document.querySelector('#registrar');
-botonReg.addEventListener('click', ingresarGasto);
 
 
 const leerExtras = async () => {
@@ -151,6 +144,13 @@ const leerExtras = async () => {
 
 
 const pintarExtras = () => {
+    if (extrasBase2.length >= 1) {
+        const creados = document.querySelectorAll('#extras >tbody> tr > td');
+        creados.forEach((x) => {
+            x.parentNode.remove();
+        })
+    }
+
     for (let i = 0; i < extrasBase2.length; i++) {
         console.log(extrasBase2[i]);
         const tr = document.createElement('tr');
@@ -158,11 +158,11 @@ const pintarExtras = () => {
         const con = document.createTextNode(extrasBase2[i][0]);
         t1.append(con);
         const t2 = document.createElement('td');
-        const can = document.createTextNode(extrasBase2[i][1]);
+        const can = document.createTextNode(`$ ${extrasBase2[i][1]}`);
         t2.append(can);
         const t3 = document.createElement('td');
-        const pag = document.createTextNode(extrasBase2[i][2]);//voy a cambiarlo por las casillas
-        t3.append(pag);
+        //const pag = document.createTextNode(extrasBase2[i][2]);//voy a cambiarlo por las casillas
+        //t3.append(pag);
         tr.append(t1, t2, t3);
         const concepto2 = document.querySelector('#total2');
         /* "afterbegin"
@@ -171,6 +171,57 @@ const pintarExtras = () => {
         "beforeend" */
         concepto2.insertAdjacentElement('beforebegin', tr);
     }
+    const totalExtras = extrasBase2.map((x) => {
+        x = x[1];
+        return x;
+    })
+    console.log(totalExtras);
+    const reducer = (a, b) => a + b;
+    if (totalExtras.length == 0) {
+        return;
+    } else {
+        const suma = totalExtras.reduce(reducer);
+        suma2 = suma;
+        const moneda = new Intl.NumberFormat().format(suma)
+        const total3 = document.querySelector('#totalextras');
+        total3.textContent = `$ ${moneda}`;
+
+        const gMes = document.querySelector('#gastosDelMes');
+        const resultadoTotal = suma1 + suma2;
+        const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
+        gMes.textContent = `$ ${resultadoTotal2}`;
+    }
 }
-leerExtras()
-    .then(() =>pintarExtras());
+
+const traerIngreso = async () => {
+    let ingresoJson = new Object();
+    ingresoJson['id_mes'] = mes;
+    const resp4 = await fetch(url4, {
+        method: 'POST',
+        body: JSON.stringify(ingresoJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const ingreso = await resp4.json();
+    console.log(ingreso);
+    const seleccionarIngreso = document.querySelector('#ingreso');
+    const ingresoMoneda = new Intl.NumberFormat().format(ingreso.percepcion);
+    seleccionarIngreso.textContent = `$ ${ingresoMoneda}`;
+}
+
+
+
+
+
+
+
+enviarMes()
+    .then(() => pintarGP())
+    .then(() => leerExtras())
+    .then(() => pintarExtras())
+    .then(() => traerIngreso())
+//.then(()=> pintarCasillas())
+
+const botonReg = document.querySelector('#registrar');
+botonReg.addEventListener('click', ingresarGasto);
