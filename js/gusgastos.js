@@ -177,20 +177,19 @@ const pintarExtras = () => {
     })
     console.log(totalExtras);
     const reducer = (a, b) => a + b;
-    if (totalExtras.length == 0) {
-        return;
-    } else {
-        const suma = totalExtras.reduce(reducer);
-        suma2 = suma;
-        const moneda = new Intl.NumberFormat().format(suma)
-        const total3 = document.querySelector('#totalextras');
-        total3.textContent = `$ ${moneda}`;
-
-        const gMes = document.querySelector('#gastosDelMes');
-        const resultadoTotal = suma1 + suma2;
-        const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
-        gMes.textContent = `$ ${resultadoTotal2}`;
+    if (totalExtras.length==0) {
+        totalExtras.push(0);
     }
+    const suma = totalExtras.reduce(reducer);
+    suma2 = suma;
+    const moneda = new Intl.NumberFormat().format(suma)
+    const total3 = document.querySelector('#totalextras');
+    total3.textContent = `$ ${moneda}`;
+
+    const gMes = document.querySelector('#gastosDelMes');
+    const resultadoTotal = suma1 + suma2;
+    const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
+    gMes.textContent = `$ ${resultadoTotal2}`;       
 }
 
 const traerIngreso = async () => {
@@ -210,7 +209,9 @@ const traerIngreso = async () => {
     seleccionarIngreso.textContent = `$ ${ingresoMoneda}`;
 }
 
-
+const irHsbc= () => {
+    window.location.href='../html/gushsbc.html';
+}
 
 
 
@@ -225,3 +226,5 @@ enviarMes()
 
 const botonReg = document.querySelector('#registrar');
 botonReg.addEventListener('click', ingresarGasto);
+const botonHsbc = document.querySelector('#hsbc');
+botonHsbc.addEventListener('click', irHsbc);
