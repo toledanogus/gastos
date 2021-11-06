@@ -12,7 +12,7 @@
 
 <body>
     <div class='flex-container'>
-        <table>
+        <table id='primeramsi'>
             <tr>
                 <th colspan="6">Meses Sin Intereses</th>
             </tr>
@@ -26,14 +26,14 @@
             </tr>
             <tr id='totalmsi'>
                 <th>Total</th>
-                <td id='cantidadmsi'>0</td>
-                <td></td>
-                <td></td>
-                <td id='debomsi'>0</td>
-                <td id='apagarmsi'>0</td>
+                <th id='cantidadmsi'>0</th>
+                <th></th>
+                <th></th>
+                <th id='debomsi'>0</th>
+                <th id='apagarmsi'>0</th>
             </tr>
         </table>
-        <table>
+        <table id='extras'>
             <tr>
                 <th colspan="5">Gastos en una exhibición</th>
             </tr>
@@ -42,9 +42,9 @@
                 <th>Cantidad</th>
                 <th>Pagado</th>
             </tr>
-            <tr>
-                <th id='total1'>Total</th>
-                <td>0</td>
+            <tr id='filaTotalx'>
+                <th>Total</th>
+                <th id='total1'>0</td>
             </tr>
         </table>
         <table class='gastos' id="ingresar">
@@ -60,7 +60,7 @@
                 <th colspan='2'> <input id="cantidad1" type="number" required> </th>
             </tr>
             <tr>
-                <td colspan='3' id="derecha"> <button type='submit' id='registrar'> Registrar </button> </td>
+                <td colspan='3' id="derecha"> <button type='submit' id='registrar1'> Registrar </button> </td>
             </tr>
 
             <tr>
@@ -72,10 +72,14 @@
             </tr>
             <tr>
                 <th>Cantidad:</th>
-                <th colspan='2'> <input id="cantidadmsi" type="number" required> </th>
+                <th colspan='2'> <input id="cantidadmsi2" type="number" required> </th>
             </tr>
             <tr>
-                <td colspan='3' id="derecha"> <button type='submit' id='registrar'> Registrar </button> </td>
+                <th>¿A cuántos meses?:</th>
+                <th colspan='2'> <input id="msimsi" type="number" required> </th>
+            </tr>
+            <tr>
+                <td colspan='3' id="derecha"> <button type='submit' id='registrarmsi'> Registrar </button> </td>
             </tr>
         </table>
     </div>
@@ -87,7 +91,7 @@
             </tr>
             <tr>
                 <th>A pagar:</th>
-                <td>0</td>
+                <td id='totaltotal'>0</td>
             </tr>
         </table>
         <table class='abajo'>
