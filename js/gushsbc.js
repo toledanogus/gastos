@@ -1,15 +1,19 @@
 const meses2 = ['ene21', 'feb21', 'mar21', 'abr21', 'may21', 'jun21', 'jul21', 'ago21', 'sep21', 'oct21', 'nov21', 'dic21', 'ene22', 'feb22', 'mar22', 'abr22', 'may22', 'jun22', 'jul22', 'ago22', 'sep22', 'oct22', 'nov22', 'dic22'];
 const mes = localStorage.getItem('Mes');
 console.log(mes);
+const enviarMes1 = document.querySelector('h1');
+enviarMes1.textContent=mes;
 let msi, mesAPagar, extrasBase, sumax, sumay, moneda1, moneda2;
 let totalx = [];
 let totaly = [];
 let totalz = [];
+let calculo;
 const url = '../php/gushsbc.php';
 const url2 = '../php/llevarUna.php';
 const url3 = '../php/llevarMsi.php';
 const url4 = '../php/traerYansen.php';
 const url5 = '../php/leerUna.php';
+const url6 = '../php/guardarhsbc.php';
 const concepto3 = document.querySelector('#filaTotalx');
 const total3 = document.querySelector('#total1');
 const concepto1 = document.querySelector('#concepto1');
@@ -20,7 +24,13 @@ const totalx1 = document.querySelector('#cantidadmsi');
 const totaly1 = document.querySelector('#debomsi');
 const totalz1 = document.querySelector('#apagarmsi');
 const totalDelMes = document.querySelector('#gastosDelMes');
+const botonGuardar = document.querySelector('#guardarGastos');
+const mesesCompletos = ['Enero 2021', 'Febrero 2021', 'Marzo 2021', 'Abril 2021', 'Mayo 2021', 'Junio 2021', 'Julio 2021', 'Agosto 2021', 'Septiembre 2021', 'Octubre 2021', 'Noviembre 2021', 'Diciembre 2021', 'Enero 2022', 'Febrero 2022', 'Marzo 2022', 'Abril 2022', 'Mayo 2022', 'Junio 2022', 'Julio','Agosto 2022', 'Septiembre 2022', 'Octubre 2022', 'Noviembre 2022', 'Diciembre 2022']
 
+
+const element = meses2.indexOf(mes);
+const mesCompleto = mesesCompletos[element];
+enviarMes1.textContent = mesCompleto;
 
 let hsbcJson = new Object();
 hsbcJson['mes'] = mes;
@@ -216,18 +226,35 @@ const calcularTotal = () => {
     const totalDelMesValor = sumax +sumay;
     const decimal1 = parseFloat(totalDelMesValor).toFixed(2);
     const decimalMoneda = new Intl.NumberFormat().format(decimal1);
-    totalDelMes.textContent=decimalMoneda;
+    totalDelMes.textContent= `$ ${decimalMoneda}`;
 
+    const totalTotal = document.querySelector('#totaltotal');
+    calculo = decimal1-0; //En lugar de 0 va el aporte de Yansen.
+    const calculoMoneda = new Intl.NumberFormat().format(calculo);
+    totalTotal.textContent=`$ ${calculoMoneda}`; 
 }
 
-
+const guardarGastos = async() => {
+    let hsbcJson = new Object();
+    hsbcJson['id_mes'] = mes;
+    hsbcJson['cantidad'] = calculo;
+    console.log(mes, calculo);
+    const peticion5 = await fetch(url6, {
+        method: 'POST',
+        body: JSON.stringify(hsbcJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+}
 
 
 
 reg2.addEventListener('click', llevarMsi);
 
-
 reg1.addEventListener('click', llevarUna);
+
+botonGuardar.addEventListener('click', guardarGastos);
 
 pedirHsbc()
     .then(() => pintarMsi())

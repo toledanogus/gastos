@@ -22,4 +22,3 @@ foreach ($mesBase as $value) {
     }
 }
 echo json_encode($arrayClave, JSON_NUMERIC_CHECK);
-

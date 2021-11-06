@@ -1,12 +1,22 @@
 const mes = localStorage.getItem('Mes');
 console.log(mes);
+const enviarMes1 = document.querySelector('h1');
+
 let suma1, suma2, suma3, gastosP, extrasBase, extrasBase2, tipomes;
 const url = '../php/traergastos.php';
 const url2 = '../php/llevarextras.php';
 const url3 = '../php/traerextras.php';
 const url4 = '../php/traerIngreso.php';
+const url5 = '../php/traerHsbc.php';
 
 const meses = ['nov21', 'dic21', 'ene22', 'feb22', 'mar22', 'abr22', 'may22', 'jun22', 'jul22', 'ago22', 'sep22', 'oct22', 'nov22', 'dic22']
+const mesesCompletos = ['Noviembre 2021', 'Diciembre 2021', 'Enero 2022', 'Febrero 2022', 'Marzo 2022', 'Abril 2022', 'Mayo 2022', 'Junio 2022', 'Julio 2022', 'Agosto 2022', 'Septiembre 2022', 'Octubre 2022', 'Noviembre 2022', 'Diciembre 2022']
+
+
+const element = meses.indexOf(mes);
+const mesCompleto = mesesCompletos[element];
+enviarMes1.textContent = mesCompleto;
+
 
 switch (mes) {
     case meses[0]:
@@ -81,10 +91,17 @@ const pintarGP = () => {
     }
     const reducer = (a, b) => a + b;
     const cantidades = Object.values(gastosP);
-    const suma = cantidades.reduce(reducer);
-    suma1 = suma;
-    const moneda = new Intl.NumberFormat().format(suma)
-    total1.textContent = `$ ${moneda}`;
+     suma1 = cantidades.reduce(reducer);
+    
+    if (suma3 == undefined || 0) {
+        const resultadoFinal = suma1;
+        const moneda = new Intl.NumberFormat().format(resultadoFinal);
+        total1.textContent = `$ ${moneda}`;
+    } else {
+        const resultadoFinal = suma1 +suma3;
+        const moneda = new Intl.NumberFormat().format(resultadoFinal);
+        total1.textContent = `$ ${moneda}`;
+    }
 };
 
 const pintarCasillas = () => {
@@ -177,7 +194,7 @@ const pintarExtras = () => {
     })
     console.log(totalExtras);
     const reducer = (a, b) => a + b;
-    if (totalExtras.length==0) {
+    if (totalExtras.length == 0) {
         totalExtras.push(0);
     }
     const suma = totalExtras.reduce(reducer);
@@ -187,9 +204,15 @@ const pintarExtras = () => {
     total3.textContent = `$ ${moneda}`;
 
     const gMes = document.querySelector('#gastosDelMes');
-    const resultadoTotal = suma1 + suma2;
-    const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
-    gMes.textContent = `$ ${resultadoTotal2}`;       
+    if (suma3 == undefined) {
+        const resultadoTotal = suma1 + suma2;
+        const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
+        gMes.textContent = `$ ${resultadoTotal2}`;
+    } else {
+        const resultadoTotal = suma1 + suma2 + suma3;
+        const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
+        gMes.textContent = `$ ${resultadoTotal2}`;
+    }
 }
 
 const traerIngreso = async () => {
@@ -209,15 +232,38 @@ const traerIngreso = async () => {
     seleccionarIngreso.textContent = `$ ${ingresoMoneda}`;
 }
 
-const irHsbc= () => {
-    window.location.href='../html/gushsbc.html';
+const irHsbc = () => {
+    window.location.href = '../html/gushsbc.html';
+}
+
+const traerHsbc = async () => {
+
+    //Aquí va lo que esté en la base de datos
+    let ingresoJson = new Object();
+    ingresoJson['id_mes'] = mes;
+    const resp6 = await fetch(url5, {
+        method: 'POST',
+        body: JSON.stringify(ingresoJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    const hsbc = await resp6.json();
+    console.log(hsbc);
+    const totalHsbc = document.querySelector('#totalhsbc');
+    const ingresoMoneda = new Intl.NumberFormat().format(hsbc);
+    totalHsbc.textContent = `$ ${ingresoMoneda}`;
+    if (hsbc.length > 0) {
+        suma3 = hsbc[0][0];
+        console.log(suma3);
+    }
 }
 
 
 
 
-
 enviarMes()
+    .then(() => traerHsbc())
     .then(() => pintarGP())
     .then(() => leerExtras())
     .then(() => pintarExtras())
