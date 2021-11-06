@@ -21,5 +21,5 @@ foreach ($mesBase as $value) {
         array_push($mensaje, 'Ya no entra');
     }
 }
-echo json_encode($arrayClave);
+echo json_encode($arrayClave, JSON_NUMERIC_CHECK);
 

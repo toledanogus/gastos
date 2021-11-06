@@ -2,6 +2,9 @@ const meses2 = ['ene21', 'feb21', 'mar21', 'abr21', 'may21', 'jun21', 'jul21', '
 const mes = localStorage.getItem('Mes');
 console.log(mes);
 let msi, mesAPagar;
+let totalx = [];
+let totaly = [];
+let totalz = [];
 const url = '../php/gushsbc.php';
 const url2 = '../php/llevarextras.php';
 const url3 = '../php/traerextras.php';
@@ -27,19 +30,23 @@ const pedirHsbc = async () => {
 
 const pintarMsi = () => {
     const indiceActual = meses2.indexOf(mes);
+    
     for (let i = 0, j = 0; i < msi.length / 4; i++, j += 4) {
         const indiceCompra = meses2.indexOf(msi[3 + j]);
-        if (indiceCompra==-1) {
-            mesAPagar='1'
-        }else{
-            mesAPagar = indiceActual-indiceCompra;
+        if (indiceCompra == -1) {
+            mesAPagar = '1'
+        } else {
+            mesAPagar = indiceActual - indiceCompra;
         }
-
-        const deboRestante = (msi[j + 1]/msi[j + 2])*(msi[j + 2]-(mesAPagar-1));
-        console.log(deboRestante);
+        
+        
+        const deboRestante = (msi[j + 1] / msi[j + 2]) * (msi[j + 2] - (mesAPagar - 1));
         const deboRestante1 = parseFloat(deboRestante).toFixed(2);
-        const mensualidad = msi[j + 1]/msi[j + 2];
+        const mensualidad = msi[j + 1] / msi[j + 2];
         const mensualidad1 = parseFloat(mensualidad).toFixed(2);
+        totalx.push(msi[j + 1]);
+        totaly.push(deboRestante);
+        totalz.push(mensualidad);
         const tr = document.createElement('tr');
         const t1 = document.createElement('td');
         const t2 = document.createElement('td');
@@ -63,6 +70,25 @@ const pintarMsi = () => {
         const concepto2 = document.querySelector('#totalmsi');
         concepto2.insertAdjacentElement('beforebegin', tr);
     }
+    const reducer = (a, b) => a + b;
+    
+    const suma = totalx.reduce(reducer);
+    const monedax = parseFloat(suma).toFixed(1);
+    const moneda = new Intl.NumberFormat().format(monedax);
+    const totalx1 = document.querySelector('#cantidadmsi');
+    totalx1.textContent = `$ ${moneda}`;
+
+    const suma2 = totaly.reduce(reducer);
+    const moneday = parseFloat(suma2).toFixed(1);
+    const moneda2 = new Intl.NumberFormat().format(moneday);
+    const totaly1 = document.querySelector('#debomsi');
+    totaly1.textContent = `$ ${moneda2}`;
+
+    const suma3 = totalz.reduce(reducer);
+    const monedaz = parseFloat(suma3).toFixed(1);
+    const moneda3 = new Intl.NumberFormat().format(monedaz);
+    const totalz1 = document.querySelector('#apagarmsi');
+    totalz1.textContent = `$ ${moneda3}`;
 }
 
 
