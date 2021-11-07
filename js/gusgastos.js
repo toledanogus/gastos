@@ -2,7 +2,7 @@ const mes = localStorage.getItem('Mes');
 console.log(mes);
 const enviarMes1 = document.querySelector('h1');
 
-let suma1, suma2, suma3, gastosP, extrasBase, extrasBase2, tipomes;
+let suma1, suma2, suma3, suma4, gastosP, extrasBase, extrasBase2, tipomes, primera, segunda, resultadoFinal, totalTotal;
 const url = '../php/traergastos.php';
 const url2 = '../php/llevarextras.php';
 const url3 = '../php/traerextras.php';
@@ -12,7 +12,8 @@ const url5 = '../php/traerHsbc.php';
 const meses = ['nov21', 'dic21', 'ene22', 'feb22', 'mar22', 'abr22', 'may22', 'jun22', 'jul22', 'ago22', 'sep22', 'oct22', 'nov22', 'dic22']
 const mesesCompletos = ['Noviembre 2021', 'Diciembre 2021', 'Enero 2022', 'Febrero 2022', 'Marzo 2022', 'Abril 2022', 'Mayo 2022', 'Junio 2022', 'Julio 2022', 'Agosto 2022', 'Septiembre 2022', 'Octubre 2022', 'Noviembre 2022', 'Diciembre 2022']
 
-
+const seleccionar1 = document.querySelector('#quincena1');
+const seleccionar2 = document.querySelector('#quincena2');
 const element = meses.indexOf(mes);
 const mesCompleto = mesesCompletos[element];
 enviarMes1.textContent = mesCompleto;
@@ -91,17 +92,19 @@ const pintarGP = () => {
     }
     const reducer = (a, b) => a + b;
     const cantidades = Object.values(gastosP);
-     suma1 = cantidades.reduce(reducer);
-    
-    if (suma3 == undefined || 0) {
+    suma1 = cantidades.reduce(reducer);
+    resultadoFinal = suma1 + primera + segunda;
+    const moneda = new Intl.NumberFormat().format(resultadoFinal);
+    total1.textContent = `$ ${moneda}`;
+    /* if (suma3 == undefined || 0) {
         const resultadoFinal = suma1;
         const moneda = new Intl.NumberFormat().format(resultadoFinal);
         total1.textContent = `$ ${moneda}`;
     } else {
-        const resultadoFinal = suma1 +suma3;
+        const resultadoFinal = suma1 + suma3;
         const moneda = new Intl.NumberFormat().format(resultadoFinal);
         total1.textContent = `$ ${moneda}`;
-    }
+    } */
 };
 
 const pintarCasillas = () => {
@@ -204,7 +207,10 @@ const pintarExtras = () => {
     total3.textContent = `$ ${moneda}`;
 
     const gMes = document.querySelector('#gastosDelMes');
-    if (suma3 == undefined) {
+    totalTotal = resultadoFinal + suma2;
+    const moneda2 = new Intl.NumberFormat().format(totalTotal);
+    gMes.textContent = `$ ${moneda2}`;
+    /* if (suma3 == undefined) {
         const resultadoTotal = suma1 + suma2;
         const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
         gMes.textContent = `$ ${resultadoTotal2}`;
@@ -212,7 +218,7 @@ const pintarExtras = () => {
         const resultadoTotal = suma1 + suma2 + suma3;
         const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
         gMes.textContent = `$ ${resultadoTotal2}`;
-    }
+    } */
 }
 
 const traerIngreso = async () => {
@@ -250,13 +256,22 @@ const traerHsbc = async () => {
     });
     const hsbc = await resp6.json();
     console.log(hsbc);
-    const totalHsbc = document.querySelector('#totalhsbc');
-    const ingresoMoneda = new Intl.NumberFormat().format(hsbc);
-    totalHsbc.textContent = `$ ${ingresoMoneda}`;
     if (hsbc.length > 0) {
         suma3 = hsbc[0][0];
-        console.log(suma3);
+        suma4 = hsbc[1][0];
+        primera = suma3 / 2;
+        segunda = suma4 / 2;
+        console.log(primera, segunda);
+
     }
+    const totalHsbc = document.querySelector('#totalhsbc');
+    const ingresoMoneda = new Intl.NumberFormat().format(hsbc[0][0]);
+    totalHsbc.textContent = `$ ${ingresoMoneda}`;
+    const moneda1 = new Intl.NumberFormat().format(primera);
+    seleccionar1.textContent = `$ ${moneda1}`;
+    const moneda2 = new Intl.NumberFormat().format(segunda);
+    seleccionar2.textContent = `$ ${moneda2}`;
+
 }
 
 
@@ -268,7 +283,7 @@ enviarMes()
     .then(() => leerExtras())
     .then(() => pintarExtras())
     .then(() => traerIngreso())
-//.then(()=> pintarCasillas())
+    .then(()=> pintarCasillas())
 
 const botonReg = document.querySelector('#registrar');
 botonReg.addEventListener('click', ingresarGasto);
