@@ -1,55 +1,86 @@
-h1 {
-    color: indigo;
+body, html{
+    background-color: #FFE4D9;
 }
 
-img { 
+h1 {
+    color: #000000;
+}
+
+img {
     width: 10%;
-    border-radius:50%;
+    border-radius: 50%;
     margin: 20px;
     border: 10px solid;
     border-color: rgb(48, 36, 218);
 }
-button{
+
+button {
     display: inline-block;
     margin: 5%;
-    margin-top:1%;
+    margin-top: 1%;
 }
-table.gastos{
+
+table {
+    border: 1px solid;
+    background-color: #D7E2DC;
+    box-shadow: 4px 4px 10px rgb(109, 106, 106);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+table.gastos {
     margin: .5%;
     text-align: left;
 }
-table{
+table#ingresar>tbody>tr>th{
+    background-color: initial;
+}
+
+
+table.registrar {
     border: 1px solid;
 }
-table.registrar{
+
+table.abajo {
     border: 1px solid;
 }
-table.abajo{
-    border: 1px solid;
-}
-table.abajo > tbody > tr > th{
+
+table.abajo>tbody>tr>th {
     border: 0px;
 }
-table#guardar{
+
+table#guardar {
     border: 0px;
 }
-th{
+
+th {
     padding: 10px;
     border: 1px solid;
+    background-color: #FFCAD4;
+    color: black;
+    border-radius: 5px;
+    border-color: black;
 }
-td{
-    text-align: left;
+
+td {
+    text-align: center;
     padding: 5px;
+    color:black
+
 }
-td#ingreso{
+
+td#ingreso {
     text-align: center;
 }
-th#total{
+
+th#total {
     border: 0px;
 }
-table.registrar > tbody > tr > th, table#ingresar > tbody > tr > th{
+
+table.registrar>tbody>tr>th, table#ingresar>tbody>tr>th {
     border: 0px;
 }
+
 .flex-container {
     display: flex;
     flex-flow: wrap;
@@ -57,31 +88,55 @@ table.registrar > tbody > tr > th, table#ingresar > tbody > tr > th{
     align-items: flex-start;
 }
 
-div>table{
+div>table {
     margin: 3%;
     margin-top: 1%;
 }
-td#derecha, th#derecha{
+
+td#derecha, th#derecha {
     text-align: right;
+    background-color: unset;
+    color: black;
 }
-button#extras{
+
+th#ingresomes {
+    background-color: unset;
+    color: black;
+}
+th#titulo{
+    background-color:#9C8188;
+    color: white;
+    text-align: center;
+}
+th#totales{
+    background-color: #F4ACB7;
+}
+
+button#extras {
     margin: 1%;
 }
+
 td:nth-child(3) {
     text-align: center;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
 
+input[type=number] {
+    -moz-appearance: textfield;
+}
+table#guardar>tbody>tr>td {
+    background-color: transparent;
+}
+table#guardar{
+    background-color: transparent;
+    box-shadow: none;
+}
 /* #tablaabajo{
     display;
 } */
