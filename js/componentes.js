@@ -4,7 +4,7 @@ const redirigirG = ()=>{
 };
 
 const redirigirY =()=>{
-    window.location.href='../assets/html/yanmes.html';
+    window.location.href='assets/html/yanmes.html';
     console.log('Yan');
 };
 
