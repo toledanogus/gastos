@@ -137,6 +137,7 @@ table#guardar{
     background-color: transparent;
     box-shadow: none;
 }
-/* #tablaabajo{
-    display;
-} */
+
+.tache {
+    text-decoration: line-through; ;
+}

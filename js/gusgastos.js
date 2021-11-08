@@ -2,7 +2,7 @@ const mes = localStorage.getItem('Mes');
 //console.log(mes);
 const enviarMes1 = document.querySelector('h1');
 
-let suma1, suma2, suma3, suma4, sumaPagos, checados, conceptosPagados, pagosActuales, gastosP, extrasBase, extrasBase2, tipomes, primera, segunda, resultadoFinal, totalTotal;
+let suma1, suma2, suma3, suma4, sumaPagos, checados, sobrante, ingresoMes, conceptosPagados, pendiente, pagosActuales, gastosP, extrasBase, extrasBase2, tipomes, primera, segunda, resultadoFinal, totalTotal;
 
 const url = '../php/traergastos.php';
 const url2 = '../php/llevarextras.php';
@@ -82,14 +82,15 @@ const enviarMes = async () => {
         }
     });
     gastosP = await resp.json();
-    console.log(gastosP);
+    //Agregar quincenas hsbc:
+    //gastosP.push({quincena1: primera}, {quincena2: segunda});
 };
 
 const pintarGP = () => {
     const tabla1 = document.querySelectorAll('#permanentes > tbody > tr > td');
     const total1 = document.querySelector('#total1');
     const elementos = Array.from(tabla1);
-    console.log(elementos);
+    //console.log(elementos);
 
     for (let i = 0, j = 0; i < 9; i++, j += 4) {
         elementos[j].nextElementSibling.textContent = `$ ${Object.values(gastosP)[i]}`;
@@ -97,7 +98,7 @@ const pintarGP = () => {
     const reducer = (a, b) => a + b;
     const cantidades = Object.values(gastosP);
     suma1 = cantidades.reduce(reducer);
-    resultadoFinal = suma1 + primera + segunda;
+    resultadoFinal = suma1;
     const moneda = new Intl.NumberFormat().format(resultadoFinal);
     total1.textContent = `$ ${moneda}`;
     /* if (suma3 == undefined || 0) {
@@ -118,9 +119,10 @@ const pintarCasillas = () => {
         input.setAttribute('type', 'checkbox');
         input.setAttribute('name', conceptos[y]);
         input.setAttribute('value', conceptos[y]);
+        console.log(conceptos);
         x.append(input);
     });
-    
+
     document.querySelectorAll('td:nth-child(4):not(.hsbc)').forEach((x, y) => {
         const input = document.createElement('input');
         const conceptos = Object.keys(gastosP);
@@ -152,6 +154,7 @@ const ingresarGasto = async () => {
                 'Content-Type': 'application/json'
             }
         });
+        //extrasBase2 Trae concepto, cantidad y mes de los extras que metí
         extrasBase2 = await peticion2.json();
         console.log(extrasBase2);
     }
@@ -216,14 +219,27 @@ const pintarExtras = () => {
     }
     const suma = totalExtras.reduce(reducer);
     suma2 = suma;
+    //Suma2 es la suma de todos los extras
+    console.log(suma2);
     const moneda = new Intl.NumberFormat().format(suma)
     const total3 = document.querySelector('#totalextras');
     total3.textContent = `$ ${moneda}`;
 
     const gMes = document.querySelector('#gastosDelMes');
+    //Se asigna la suma del total más los extras
     totalTotal = resultadoFinal + suma2;
     const moneda2 = new Intl.NumberFormat().format(totalTotal);
     gMes.textContent = `$ ${moneda2}`;
+
+    const select = document.querySelector('#pendiente');
+    pendiente = totalTotal - sumaPagos;
+    const pendienteM = new Intl.NumberFormat().format(pendiente);
+    select.textContent = `$ ${pendienteM}`;
+
+    const select2 = document.querySelector('#sobrante');
+    sobrante = ingresoMes - totalTotal;
+    const sobranteM = new Intl.NumberFormat().format(sobrante);
+    select2.textContent = `$ ${sobranteM}`;
     /* if (suma3 == undefined) {
         const resultadoTotal = suma1 + suma2;
         const resultadoTotal2 = new Intl.NumberFormat().format(resultadoTotal);
@@ -247,6 +263,7 @@ const traerIngreso = async () => {
     });
     const ingreso = await resp4.json();
     //console.log(ingreso);
+    ingresoMes = ingreso.percepcion;
     const seleccionarIngreso = document.querySelector('#ingreso');
     const ingresoMoneda = new Intl.NumberFormat().format(ingreso.percepcion);
     seleccionarIngreso.textContent = `$ ${ingresoMoneda}`;
@@ -275,6 +292,9 @@ const traerHsbc = async () => {
         suma4 = hsbc[1][0];
         primera = suma3 / 2;
         segunda = suma4 / 2;
+        gastosP['quincena1'] = primera;
+        gastosP['quincena2'] = segunda;
+        console.log(gastosP);
         console.log(primera, segunda);
 
     }
@@ -294,12 +314,12 @@ const pagoCompleto = () => {
         x = x.value;
         pagos.push(gastosP[x]);
         conceptosPagados.push(x);
-
     });
     console.log(pagos);
     const reducer = (a, b) => a + b;
     sumaPagos = pagos.reduce(reducer);
     console.log(sumaPagos);
+    console.log(conceptosPagados);
 }
 
 const leerBase = async () => {
@@ -313,7 +333,7 @@ const leerBase = async () => {
         }
     });
     checados = await resp8.json();
-    console.log(checados);
+    //console.log(checados);
 }
 
 const registrarBase = async () => {
@@ -332,14 +352,37 @@ const registrarBase = async () => {
     pagosActuales = await peticion7.json();
     console.log(pagosActuales);
 }
- const checar = () => {
-    checados.forEach((x)=>{
+
+const checar = () => {
+    checados.forEach((x) => {
         const sel = document.querySelector(`input[name=${x[0]}]`);
         sel.setAttribute('checked', 'checked');
-        console.log(sel);
-    })
- }
+        sel.parentElement.previousElementSibling.setAttribute('class', 'tache');
+    });
+}
 
+const checarInicial = () => {
+    pagosActuales.forEach((x) => {
+        const sel = document.querySelector(`input[name=${x[0]}]`);
+        sel.setAttribute('checked', 'checked');
+        sel.parentElement.previousElementSibling.setAttribute('class', 'tache');
+        //sel.previousSibling.setAttribute('type', 'hidden');
+        //console.log(sel);
+    })
+}
+
+const calcularPago = () => {
+    const select = document.querySelector('#pendiente');
+    pendiente = totalTotal - sumaPagos;
+    const pendienteM = new Intl.NumberFormat().format(pendiente);
+    select.textContent = `$ ${pendienteM}`;
+
+    const select2 = document.querySelector('#sobrante');
+    sobrante = ingresoMes - totalTotal;
+    const sobranteM = new Intl.NumberFormat().format(sobrante);
+    select2.textContent = `$ ${sobranteM}`;
+
+}
 enviarMes()
     .then(() => traerHsbc())
     .then(() => pintarGP())
@@ -350,10 +393,20 @@ enviarMes()
     .then(() => leerBase())
     .then(() => checar())
     .then(() => pagoCompleto())
+    .then(() => calcularPago())
 
 const botonReg = document.querySelector('#registrar');
-botonReg.addEventListener('click', ingresarGasto);
+botonReg.addEventListener('click', () => {
+    ingresarGasto()
+
+});
 const botonHsbc = document.querySelector('#hsbc');
 botonHsbc.addEventListener('click', irHsbc);
+
 const botonPagado = document.querySelector('#pagado');
-botonPagado.addEventListener('click', pagoCompleto);
+botonPagado.addEventListener('click', () => {
+    pagoCompleto();
+    registrarBase()
+        .then(() => checarInicial())
+        .then(() => calcularPago())
+});
