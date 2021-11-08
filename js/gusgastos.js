@@ -1,13 +1,17 @@
 const mes = localStorage.getItem('Mes');
-console.log(mes);
+//console.log(mes);
 const enviarMes1 = document.querySelector('h1');
 
-let suma1, suma2, suma3, suma4, gastosP, extrasBase, extrasBase2, tipomes, primera, segunda, resultadoFinal, totalTotal;
+let suma1, suma2, suma3, suma4, sumaPagos, checados, conceptosPagados, pagosActuales, gastosP, extrasBase, extrasBase2, tipomes, primera, segunda, resultadoFinal, totalTotal;
+
 const url = '../php/traergastos.php';
 const url2 = '../php/llevarextras.php';
 const url3 = '../php/traerextras.php';
 const url4 = '../php/traerIngreso.php';
 const url5 = '../php/traerHsbc.php';
+const url6 = '../php/registrarPagos.php';
+const url7 = '../php/checados.php';
+
 
 const meses = ['nov21', 'dic21', 'ene22', 'feb22', 'mar22', 'abr22', 'may22', 'jun22', 'jul22', 'ago22', 'sep22', 'oct22', 'nov22', 'dic22']
 const mesesCompletos = ['Noviembre 2021', 'Diciembre 2021', 'Enero 2022', 'Febrero 2022', 'Marzo 2022', 'Abril 2022', 'Mayo 2022', 'Junio 2022', 'Julio 2022', 'Agosto 2022', 'Septiembre 2022', 'Octubre 2022', 'Noviembre 2022', 'Diciembre 2022']
@@ -87,7 +91,7 @@ const pintarGP = () => {
     const elementos = Array.from(tabla1);
     console.log(elementos);
 
-    for (let i = 0, j = 0; i < 9; i++, j += 3) {
+    for (let i = 0, j = 0; i < 9; i++, j += 4) {
         elementos[j].nextElementSibling.textContent = `$ ${Object.values(gastosP)[i]}`;
     }
     const reducer = (a, b) => a + b;
@@ -108,12 +112,22 @@ const pintarGP = () => {
 };
 
 const pintarCasillas = () => {
-    const tabla1 = document.querySelectorAll('td:nth-child(3):not(.hsbc)').forEach((x) => {
+    const tabla1 = document.querySelectorAll('td:nth-child(3):not(.hsbc)').forEach((x, y) => {
         const input = document.createElement('input');
         const conceptos = Object.keys(gastosP);
         input.setAttribute('type', 'checkbox');
-        input.setAttribute('name', conceptos[0]);
-        input.setAttribute('value', conceptos[0]);
+        input.setAttribute('name', conceptos[y]);
+        input.setAttribute('value', conceptos[y]);
+        x.append(input);
+    });
+    
+    document.querySelectorAll('td:nth-child(4):not(.hsbc)').forEach((x, y) => {
+        const input = document.createElement('input');
+        const conceptos = Object.keys(gastosP);
+        input.setAttribute('type', 'checkbox');
+        input.setAttribute('name', `parcial${conceptos[y]}`);
+        input.setAttribute('value', `parcial${conceptos[y]}`);
+        //input.setAttribute('checked', 'checked');
         x.append(input);
     });
 }
@@ -172,7 +186,7 @@ const pintarExtras = () => {
     }
 
     for (let i = 0; i < extrasBase2.length; i++) {
-        console.log(extrasBase2[i]);
+        //console.log(extrasBase2[i]);
         const tr = document.createElement('tr');
         const t1 = document.createElement('td');
         const con = document.createTextNode(extrasBase2[i][0]);
@@ -232,7 +246,7 @@ const traerIngreso = async () => {
         }
     });
     const ingreso = await resp4.json();
-    console.log(ingreso);
+    //console.log(ingreso);
     const seleccionarIngreso = document.querySelector('#ingreso');
     const ingresoMoneda = new Intl.NumberFormat().format(ingreso.percepcion);
     seleccionarIngreso.textContent = `$ ${ingresoMoneda}`;
@@ -271,11 +285,60 @@ const traerHsbc = async () => {
     seleccionar1.textContent = `$ ${moneda1}`;
     const moneda2 = new Intl.NumberFormat().format(segunda);
     seleccionar2.textContent = `$ ${moneda2}`;
-
 }
 
+const pagoCompleto = () => {
+    let pagos = [0];
+    conceptosPagados = [];
+    document.querySelectorAll('input:checked').forEach((x) => {
+        x = x.value;
+        pagos.push(gastosP[x]);
+        conceptosPagados.push(x);
 
+    });
+    console.log(pagos);
+    const reducer = (a, b) => a + b;
+    sumaPagos = pagos.reduce(reducer);
+    console.log(sumaPagos);
+}
 
+const leerBase = async () => {
+    let checarJson = new Object();
+    checarJson['id_mes'] = mes;
+    const resp8 = await fetch(url7, {
+        method: 'POST',
+        body: JSON.stringify(checarJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    checados = await resp8.json();
+    console.log(checados);
+}
+
+const registrarBase = async () => {
+    const pagosJson = new Array();
+    pagosJson.push(mes);
+    for (let i = 0; i < conceptosPagados.length; i++) {
+        pagosJson.push(conceptosPagados[i]);
+    }
+    const peticion7 = await fetch(url6, {
+        method: 'POST',
+        body: JSON.stringify(pagosJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    pagosActuales = await peticion7.json();
+    console.log(pagosActuales);
+}
+ const checar = () => {
+    checados.forEach((x)=>{
+        const sel = document.querySelector(`input[name=${x[0]}]`);
+        sel.setAttribute('checked', 'checked');
+        console.log(sel);
+    })
+ }
 
 enviarMes()
     .then(() => traerHsbc())
@@ -283,9 +346,14 @@ enviarMes()
     .then(() => leerExtras())
     .then(() => pintarExtras())
     .then(() => traerIngreso())
-    .then(()=> pintarCasillas())
+    .then(() => pintarCasillas())
+    .then(() => leerBase())
+    .then(() => checar())
+    .then(() => pagoCompleto())
 
 const botonReg = document.querySelector('#registrar');
 botonReg.addEventListener('click', ingresarGasto);
 const botonHsbc = document.querySelector('#hsbc');
 botonHsbc.addEventListener('click', irHsbc);
+const botonPagado = document.querySelector('#pagado');
+botonPagado.addEventListener('click', pagoCompleto);
