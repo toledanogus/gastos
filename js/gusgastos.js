@@ -207,7 +207,10 @@ const pintarExtras = () => {
         "beforebegin"
         "beforeend" */
         concepto2.insertAdjacentElement('beforebegin', tr);
+        //Agregar los extras al array de conceptos para sumarlos
+        gastosP[`${extrasBase2[i][0]}`] = extrasBase2[i][1];
     }
+
     const totalExtras = extrasBase2.map((x) => {
         x = x[1];
         return x;
@@ -224,6 +227,8 @@ const pintarExtras = () => {
     const moneda = new Intl.NumberFormat().format(suma)
     const total3 = document.querySelector('#totalextras');
     total3.textContent = `$ ${moneda}`;
+
+
 
     const gMes = document.querySelector('#gastosDelMes');
     //Se asigna la suma del total más los extras
