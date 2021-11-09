@@ -119,7 +119,7 @@ const pintarCasillas = () => {
         input.setAttribute('type', 'checkbox');
         input.setAttribute('name', conceptos[y]);
         input.setAttribute('value', conceptos[y]);
-        console.log(conceptos);
+        //console.log(conceptos);
         x.append(input);
     });
 
@@ -321,9 +321,19 @@ const pagoCompleto = () => {
     let pagos = [0];
     conceptosPagados = [];
     document.querySelectorAll("input:checked:not([name^='parcial'])").forEach((x) => {
-        x = x.value;
-        pagos.push(gastosP[x]);
-        conceptosPagados.push(x);
+        const verificarCasillaJunto = x.parentNode.nextElementSibling.childNodes[0];
+        if (verificarCasillaJunto.checked == 1) {
+            verificarCasillaJunto.hidden = true;
+            x = x.value;
+            pagos.push(gastosP[x]/2);
+            conceptosPagados.push(x);
+        }else{
+            const verificarCasillaJunto = x.parentNode.nextElementSibling.childNodes[0];
+            verificarCasillaJunto.hidden = true;
+            x = x.value;
+            pagos.push(gastosP[x]);
+            conceptosPagados.push(x);
+        }
     });
     document.querySelectorAll("[name^='parcial']:checked").forEach((x) => {
         x = x.value;
