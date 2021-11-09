@@ -113,7 +113,7 @@ const pintarGP = () => {
 };
 
 const pintarCasillas = () => {
-    const tabla1 = document.querySelectorAll('td:nth-child(3):not(.hsbc)').forEach((x, y) => {
+    document.querySelectorAll('td:nth-child(3):not(.hsbc)').forEach((x, y) => {
         const input = document.createElement('input');
         const conceptos = Object.keys(gastosP);
         input.setAttribute('type', 'checkbox');
@@ -135,7 +135,8 @@ const pintarCasillas = () => {
 }
 
 const ingresarGasto = async () => {
-    let concepto = document.querySelector('#concepto').value;
+    let conceptox = document.querySelector('#concepto').value;
+    let concepto = conceptox.replace(/\s+/g, '_');
     let cantidad = document.querySelector('#cantidad').value;
     console.log(concepto, cantidad);
     document.querySelector('#concepto').value = '';
@@ -186,13 +187,17 @@ const pintarExtras = () => {
         creados.forEach((x) => {
             x.parentNode.remove();
         })
-    }
+    };
 
     for (let i = 0; i < extrasBase2.length; i++) {
         //console.log(extrasBase2[i]);
         const tr = document.createElement('tr');
         const t1 = document.createElement('td');
-        const con = document.createTextNode(extrasBase2[i][0]);
+        let conx = document.createTextNode(extrasBase2[i][0]);
+        //Obtengo un string de un textNode:
+        const cony = conx.wholeText;
+        console.log(cony);
+        let con = cony.replace(/_+/g, ' ');
         t1.append(con);
         const t2 = document.createElement('td');
         const can = document.createTextNode(`$ ${extrasBase2[i][1]}`);
@@ -315,16 +320,24 @@ const traerHsbc = async () => {
 const pagoCompleto = () => {
     let pagos = [0];
     conceptosPagados = [];
-    document.querySelectorAll('input:checked').forEach((x) => {
+    document.querySelectorAll("input:checked:not([name^='parcial'])").forEach((x) => {
         x = x.value;
         pagos.push(gastosP[x]);
         conceptosPagados.push(x);
     });
+    document.querySelectorAll("[name^='parcial']:checked").forEach((x) => {
+        x = x.value;
+        let z = x.replace(/parcial+/g, '');
+        pagos.push(gastosP[z] / 2);
+        conceptosPagados.push(x);
+    });
+
     console.log(pagos);
     const reducer = (a, b) => a + b;
     sumaPagos = pagos.reduce(reducer);
     console.log(sumaPagos);
     console.log(conceptosPagados);
+    console.log(gastosP);
 }
 
 const leerBase = async () => {
@@ -388,6 +401,18 @@ const calcularPago = () => {
     select2.textContent = `$ ${sobranteM}`;
 
 }
+
+const removerCasillas = () => {
+    document.querySelectorAll('input[type=checkbox]').forEach((x, y) => {
+        if (x) {
+            console.log('Sí hay inputs dibujados');
+            const input2 = document.querySelector('td>input');
+            console.log(input2);
+            input2.remove();
+        }
+    });
+}
+
 enviarMes()
     .then(() => traerHsbc())
     .then(() => pintarGP())
@@ -402,8 +427,15 @@ enviarMes()
 
 const botonReg = document.querySelector('#registrar');
 botonReg.addEventListener('click', () => {
+    removerCasillas();
     ingresarGasto()
-
+        .then(() => leerExtras())
+        .then(() => traerIngreso())
+        .then(() => pintarCasillas())
+        .then(() => leerBase())
+        .then(() => checar())
+        .then(() => pagoCompleto())
+        .then(() => calcularPago())
 });
 const botonHsbc = document.querySelector('#hsbc');
 botonHsbc.addEventListener('click', irHsbc);
