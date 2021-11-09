@@ -127,8 +127,8 @@ const pintarCasillas = () => {
         const input = document.createElement('input');
         const conceptos = Object.keys(gastosP);
         input.setAttribute('type', 'checkbox');
-        input.setAttribute('name', `parcial${conceptos[y]}`);
-        input.setAttribute('value', `parcial${conceptos[y]}`);
+        input.setAttribute('name', `parcialx${conceptos[y]}`);
+        input.setAttribute('value', `parcialx${conceptos[y]}`);
         //input.setAttribute('checked', 'checked');
         x.append(input);
     });
@@ -320,14 +320,20 @@ const traerHsbc = async () => {
 const pagoCompleto = () => {
     let pagos = [0];
     conceptosPagados = [];
-    document.querySelectorAll("input:checked:not([name^='parcial'])").forEach((x) => {
-        const verificarCasillaJunto = x.parentNode.nextElementSibling.childNodes[0];
-        if (verificarCasillaJunto.checked == 1) {
+    document.querySelectorAll("input:checked:not([name^='parcialx'])").forEach((x) => {
+        if (!x.parentNode.nextElementSibling) {
+            x = x.value;
+            pagos.push(gastosP[x]);
+            conceptosPagados.push(x);
+        }
+        else if (x.parentNode.nextElementSibling.childNodes[0] && x.parentNode.nextElementSibling.childNodes[0].checked == 1) {
+            const verificarCasillaJunto = x.parentNode.nextElementSibling.childNodes[0];
             verificarCasillaJunto.hidden = true;
             x = x.value;
-            pagos.push(gastosP[x]/2);
+            pagos.push(gastosP[x] / 2);
             conceptosPagados.push(x);
-        }else{
+        }
+        else {
             const verificarCasillaJunto = x.parentNode.nextElementSibling.childNodes[0];
             verificarCasillaJunto.hidden = true;
             x = x.value;
@@ -335,9 +341,9 @@ const pagoCompleto = () => {
             conceptosPagados.push(x);
         }
     });
-    document.querySelectorAll("[name^='parcial']:checked").forEach((x) => {
+    document.querySelectorAll("[name^='parcialx']:checked").forEach((x) => {
         x = x.value;
-        let z = x.replace(/parcial+/g, '');
+        let z = x.replace(/parcialx+/g, '');
         pagos.push(gastosP[z] / 2);
         conceptosPagados.push(x);
     });
