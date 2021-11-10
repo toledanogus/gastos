@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/componentes.css">
     <link rel="stylesheet" href="../../styles.css">
-    <title>Gus gastos mensuales</title>
+    <title>Yan gastos mensuales</title>
 </head>
 
 <body>
@@ -15,15 +15,17 @@
     <div class='flex-container'>
         <table class='gastos' id="permanentes">
             <tr>
-                <th colspan="3" id='titulo'>Gastos permanentes</th>
+                <th colspan="4" id='titulo'>Gastos permanentes</th>
             </tr>
             <tr>
                 <th>Concepto</th>
                 <th>Cantidad</th>
                 <th>Pagado</th>
+                <th>Pago parcial</th>
             </tr>
             <tr>
                 <td id="comida">Comida</td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -31,9 +33,11 @@
                 <td id='despensa'>Despensa</td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             <tr>
                 <td id='ahorro'>Ahorro</td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -41,9 +45,11 @@
                 <td id='garrafones'>Garrafones</td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             <tr>
                 <td id='internet'>Internet</td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -51,14 +57,11 @@
                 <td id='gas'>Gas</td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             <tr>
                 <td id='luz'>Luz</td>
                 <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td id='lap'>Lap</td>
                 <td></td>
                 <td></td>
             </tr>
@@ -66,17 +69,35 @@
                 <td id='psic'>Psicólogo</td>
                 <td></td>
                 <td></td>
+                <td></td>
             </tr>
             <tr>
                 <td id='movistar'>Movistar</td>
                 <td></td>
                 <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td> <button type="submit" id='hsbc'>A meses</button> </td>
+                <td id='totalhsbc'>Sin calcular</td>
+                <td class='hsbc'></td>
+            </tr>
+            <tr>
+                <th id='totales'>Primera quincena</th>
+                <th id='quincena1'>0</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th id='totales'>Segunda Quincena</th>
+                <th id='quincena2'>0</th>
+                <td></td>
             </tr>
             <tr>
                 <th>Total</th>
                 <th id="total1">0</th>
+                <th> <button type="submit" id='pagado'>Registrar pago</button> </th>
             </tr>
-            
+
         </table>
         <table class='gastos' id='extras'>
             <tr>
@@ -114,7 +135,7 @@
                 </th>
             </tr>
             <tr>
-                <th colspan='3'>Ingreso del mes:</th>
+                <th colspan='3' id='ingresomes'>Ingreso del mes:</th>
             </tr>
             <tr>
                 <td colspan="3" id='ingreso'>0</td>
@@ -129,13 +150,13 @@
             </tr>
             <tr>
                 <th>Pendiente:</th>
-                <th>0</th>
+                <th id='pendiente'>0</th>
             </tr>
         </table>
         <table class='abajo'>
             <tr>
                 <th>Sobrante:</th>
-                <th>0</th>
+                <th id='sobrante'>0</th>
             </tr>
         </table>
         <table class='abajo' id='guardar'>

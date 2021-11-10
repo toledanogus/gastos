@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/componentes.css">
+    <link rel="stylesheet" href="../../styles.css">
+    <title>Pagos a meses Yan</title>
+</head>
+
+<body>
+    <h1>Mes</h1>
+    <div class='flex-container'>
+        <table id='primeramsi'>
+            <tr>
+                <th colspan="6">Meses Sin Intereses</th>
+            </tr>
+            <tr>
+                <th>Concepto</th>
+                <th>Cantidad</th>
+                <th>Meses</th>
+                <th>Mes a pagar</th>
+                <th>Debo</th>
+                <th>A pagar</th>
+            </tr>
+            <tr id='totalmsi'>
+                <th>Total</th>
+                <th id='cantidadmsi'>0</th>
+                <th></th>
+                <th></th>
+                <th id='debomsi'>0</th>
+                <th id='apagarmsi'>0</th>
+            </tr>
+        </table>
+        <table id='extras'>
+            <tr>
+                <th colspan="5">Gastos en una exhibición</th>
+            </tr>
+            <tr>
+                <th>Concepto</th>
+                <th>Cantidad</th>
+                <th>Pagado</th>
+            </tr>
+            <tr id='filaTotalx'>
+                <th>Total</th>
+                <th id='total1'>0</td>
+            </tr>
+        </table>
+        <table class='gastos' id="ingresar">
+            <tr>
+                <th colspan="3">Ingresar nuevo gasto en una exhibición:</th>
+            </tr>
+            <tr>
+                <th>Concepto:</th>
+                <th colspan='2'> <input id="concepto1" required> </th>
+            </tr>
+            <tr>
+                <th>Cantidad:</th>
+                <th colspan='2'> <input id="cantidad1" type="number" required> </th>
+            </tr>
+            <tr>
+                <td colspan='3' id="derecha"> <button type='submit' id='registrar1'> Registrar </button> </td>
+            </tr>
+
+            <tr>
+                <th colspan="3">Ingresar nuevo gasto a MSI:</th>
+            </tr>
+            <tr>
+                <th>Concepto:</th>
+                <th colspan='2'> <input id="conceptomsi" required> </th>
+            </tr>
+            <tr>
+                <th>Cantidad:</th>
+                <th colspan='2'> <input id="cantidadmsi2" type="number" required> </th>
+            </tr>
+            <tr>
+                <th>¿A cuántos meses?:</th>
+                <th colspan='2'> <input id="msimsi" type="number" required> </th>
+            </tr>
+            <tr>
+                <td colspan='3' id="derecha"> <button type='submit' id='registrarmsi'> Registrar </button> </td>
+            </tr>
+        </table>
+    </div>
+    <div class="flex-container">
+        <table class='abajo'>
+            <tr>
+                <th>Total Global HSBC:</th>
+                <th id='gastosDelMes'>0</th>
+            </tr>
+            <tr>
+                <th>A pagar:</th>
+                <td id='totaltotal'>0</td>
+            </tr>
+        </table>
+        <table class='abajo'>
+            <tr>
+                <th>Aporte de Yansen:</th>
+                <th>0</th>
+            </tr>
+        </table>
+        <table class='abajo' id='guardar'>
+            <tr>
+                <td><button type="submit" id="guardarGastos">Enviar a página Gastos</button></td>
+            </tr>
+        </table>
+    </div>
+    <script src="../../js/yanhsbc.js"></script>
+</body>
+
+</html>
