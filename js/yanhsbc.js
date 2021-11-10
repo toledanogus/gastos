@@ -2,7 +2,6 @@ const meses2 = ['ene21', 'feb21', 'mar21', 'abr21', 'may21', 'jun21', 'jul21', '
 const mes = localStorage.getItem('Mes');
 console.log(mes);
 const enviarMes1 = document.querySelector('h1');
-enviarMes1.textContent=mes;
 let msi, mesAPagar, extrasBase, sumax, sumay, moneda1, moneda2;
 let totalx = [];
 let totaly = [];
@@ -30,7 +29,7 @@ const mesesCompletos = ['Enero 2021', 'Febrero 2021', 'Marzo 2021', 'Abril 2021'
 
 const element = meses2.indexOf(mes);
 const mesCompleto = mesesCompletos[element];
-enviarMes1.textContent = mesCompleto;
+enviarMes1.textContent = `${mesCompleto} Yansen`;
 
 let hsbcJson = new Object();
 hsbcJson['mes'] = mes;
@@ -46,8 +45,6 @@ const pedirHsbc = async () => {
     msi = await resp1.json();
     console.log(msi);
 }
-
-
 
 const pintarMsi = () => {
     if (msi.length >= 1) {
@@ -127,8 +124,6 @@ const pintarMsi = () => {
 
     }
 }
-
-
 
 const llevarUna = async () => {
     let extrasJson = new Object();
@@ -257,8 +252,6 @@ const guardarGastos = async() => {
         }
     });
 }
-
-
 
 reg2.addEventListener('click', llevarMsi);
 

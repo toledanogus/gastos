@@ -16,10 +16,9 @@ const meses = ['nov21', 'dic21', 'ene22', 'feb22', 'mar22', 'abr22', 'may22', 'j
 const mesesCompletos = ['Noviembre 2021', 'Diciembre 2021', 'Enero 2022', 'Febrero 2022', 'Marzo 2022', 'Abril 2022', 'Mayo 2022', 'Junio 2022', 'Julio 2022', 'Agosto 2022', 'Septiembre 2022', 'Octubre 2022', 'Noviembre 2022', 'Diciembre 2022']
 
 const seleccionar1 = document.querySelector('#quincena1');
-const seleccionar2 = document.querySelector('#quincena2');
 const element = meses.indexOf(mes);
 const mesCompleto = mesesCompletos[element];
-enviarMes1.textContent = mesCompleto;
+enviarMes1.textContent = `${mesCompleto} Yansen`;
 
 
 switch (mes) {
@@ -30,19 +29,19 @@ switch (mes) {
         tipomes = 'compartido';
         break;
     case meses[2]:
-        tipomes = 'malo';
+        tipomes = 'bueno';
         break;
     case meses[3]:
-        tipomes = 'bueno';
+        tipomes = 'malo';
         break;
     case meses[4]:
-        tipomes = 'malo';
-        break;
-    case meses[5]:
         tipomes = 'bueno';
         break;
-    case meses[6]:
+    case meses[5]:
         tipomes = 'malo';
+        break;
+    case meses[6]:
+        tipomes = 'bueno';
         break;
     case meses[7]:
         tipomes = 'solo';
@@ -282,20 +281,17 @@ const traerHsbc = async () => {
     });
     let hsbc = await resp6.json();
     console.log(hsbc);
-    if (!hsbc[1]){
+    if (!hsbc[1] && !hsbc[0]){
         hsbc=[[0, 0],[0, 0]];
         console.log('Está vacío');
     }
     console.log(hsbc, hsbc.length);
     if (hsbc.length > 0) {
         suma3 = hsbc[0][0];
-        suma4 = hsbc[1][0];
-        primera = suma3 / 2;
-        segunda = suma4 / 2;
+        primera = suma3;
         gastosP['quincena1'] = primera;
-        gastosP['quincena2'] = segunda;
         console.log(gastosP);
-        console.log(primera, segunda);
+        console.log(primera);
 
     }
     const totalHsbc = document.querySelector('#totalhsbc');
@@ -303,8 +299,6 @@ const traerHsbc = async () => {
     totalHsbc.textContent = `$ ${ingresoMoneda}`;
     const moneda1 = new Intl.NumberFormat().format(primera);
     seleccionar1.textContent = `$ ${moneda1}`;
-    const moneda2 = new Intl.NumberFormat().format(segunda);
-    seleccionar2.textContent = `$ ${moneda2}`;
 }
 
 const pagoCompleto = () => {
