@@ -2,17 +2,17 @@ const meses2 = ['ene21', 'feb21', 'mar21', 'abr21', 'may21', 'jun21', 'jul21', '
 const mes = localStorage.getItem('Mes');
 console.log(mes);
 const enviarMes1 = document.querySelector('h1');
-let msi, mesAPagar, extrasBase, sumax, sumay, moneda1, moneda2;
+let msi, mesAPagar, extrasBase, sumax, sumay, moneda1, moneda2, calculo;
 let totalx = [];
 let totaly = [];
 let totalz = [];
-let calculo;
 const url = '../php/gushsbcy.php';
 const url2 = '../php/llevarUnay.php';
 const url3 = '../php/llevarMsiy.php';
 const url4 = '../php/traerYansen.php';
 const url5 = '../php/leerUnay.php';
 const url6 = '../php/guardarhsbcy.php';
+const url7 = '../php/calculohsbcy.php';
 const concepto3 = document.querySelector('#filaTotalx');
 const total3 = document.querySelector('#total1');
 const concepto1 = document.querySelector('#concepto1');
@@ -253,6 +253,24 @@ const guardarGastos = async() => {
     });
 }
 
+const calcularAporte = async() => {
+    let aporteJson = new Object();
+    aporteJson['id_mes'] = mes;
+    aporteJson['cantidad'] = calculo;
+    console.log(mes, calculo);
+    const peticion6 = await fetch(url7, {
+        method: 'POST',
+        body: JSON.stringify(aporteJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+         
+    });
+    const aporteBase = await peticion6.json();
+    const aporteValor = aporteBase.cantidad;
+    const aporte = document.querySelector('#aporteYan');
+    aporte.textContent = aporteValor;
+}
 reg2.addEventListener('click', llevarMsi);
 
 reg1.addEventListener('click', llevarUna);
@@ -264,3 +282,4 @@ pedirHsbc()
     .then(() => leerExtras())
     .then(() => pintarUna())
     .then(()=> calcularTotal())
+    .then(() => calcularAporte())

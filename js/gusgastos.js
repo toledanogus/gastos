@@ -2,7 +2,7 @@ const mes = localStorage.getItem('Mes');
 //console.log(mes);
 const enviarMes1 = document.querySelector('h1');
 
-let suma1, suma2, suma3, suma4, sumaPagos, checados, sobrante, ingresoMes, conceptosPagados, pendiente, pagosActuales, gastosP, extrasBase, extrasBase2, tipomes, primera, segunda, resultadoFinal, totalTotal;
+let suma1, suma2, suma3, suma4, sumaPagos, aporteValor, checados, sobrante, ingresoMes, conceptosPagados, pendiente, pagosActuales, gastosP, extrasBase, extrasBase2, tipomes, primera, segunda, resultadoFinal, totalTotal;
 
 const url = '../php/traergastos.php';
 const url2 = '../php/llevarextras.php';
@@ -11,6 +11,7 @@ const url4 = '../php/traerIngreso.php';
 const url5 = '../php/traerHsbc.php';
 const url6 = '../php/registrarPagos.php';
 const url7 = '../php/checados.php';
+const url8 = '../php/calculohsbc.php';
 
 
 const meses = ['nov21', 'dic21', 'ene22', 'feb22', 'mar22', 'abr22', 'may22', 'jun22', 'jul22', 'ago22', 'sep22', 'oct22', 'nov22', 'dic22']
@@ -163,7 +164,6 @@ const ingresarGasto = async () => {
         .then(() => pintarExtras())
 }
 
-
 const leerExtras = async () => {
     let extrasJson = new Object();
     extrasJson['id_mes'] = mes;
@@ -178,8 +178,6 @@ const leerExtras = async () => {
     console.log(extrasBase2);
 
 }
-
-
 
 const pintarExtras = () => {
     if (extrasBase2.length >= 1) {
@@ -300,7 +298,8 @@ const traerHsbc = async () => {
     if (hsbc.length > 0) {
         suma3 = hsbc[0][0];
         suma4 = hsbc[1][0];
-        primera = suma3 / 2;
+        primera = (suma3 / 2)-aporteValor;
+        console.log(aporteValor);
         segunda = suma4 / 2;
         gastosP['quincena1'] = primera;
         gastosP['quincena2'] = segunda;
@@ -429,7 +428,26 @@ const removerCasillas = () => {
     });
 }
 
+const calcularAporte = async () => {
+    let aporteJson = new Object();
+    aporteJson['id_mes'] = mes;
+    const peticion6 = await fetch(url8, {
+        method: 'POST',
+        body: JSON.stringify(aporteJson),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+
+    });
+    const aporteBase = await peticion6.json();
+    console.log(aporteBase);
+    aporteValor = aporteBase.cantidad;
+    const aporte = document.querySelector('#aporteYan');
+    aporte.textContent = aporteValor;
+}
+
 enviarMes()
+    .then(() => calcularAporte())
     .then(() => traerHsbc())
     .then(() => pintarGP())
     .then(() => leerExtras())
